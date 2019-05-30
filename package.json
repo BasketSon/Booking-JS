@@ -1,0 +1,43 @@
+{
+  "name": "kekso-booking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Учебный проект «Кексобукинг» от HTML Academy",
+  "devDependencies": {
+    "autoprefixer": "9.5.x",
+    "browser-sync": "2.26.x",
+    "del": "^4.1.1",
+    "gulp": "^4.0.x",
+    "gulp-csso": "^3.0.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-plumber": "^1.2.x",
+    "gulp-posthtml": "^3.0.4",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "2.6.x",
+    "gulp-uglify": "^3.0.2"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "start": "gulp start"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "Firefox ESR"
+  ],
+  "editorconfig-cli": [
+    "*.json",
+    "*.js",
+    "*.html",
+    "js/**/*.js",
+    "img/**/*.svg",
+    "css/**/*.css"
+  ],
+  "engines": {
+    "node": "8.15"
+  },
+  "dependencies": {
+    "deep-extend": "^0.6.0",
+    "merge": "^1.2.1"
+  }
+}
