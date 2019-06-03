@@ -23,7 +23,7 @@ gulp.task("copyhtml", function () {
 });
 
 gulp.task("copyrest", function () {
-  return gulp.src(["app/*.ico", "app/css/**", "app/img/**"],
+  return gulp.src(["app/*.ico", "app/css/**", "app/img/**", "app/js/**"],
   {
     base: "app"
   })
@@ -49,34 +49,10 @@ gulp.task("server", function () {
     ui: false
   });
 
+  gulp.watch("app/*.html", gulp.series("copyhtml")).on("change", server.reload);
   gulp.watch("app/js/**/*.js", gulp.series("js")).on("change", server.reload);
 });
 
-// gulp.task("images", function () {
-//   return gulp.src("source/img/**/*.{jpg,png,svg}")
-//     .pipe(imagemin([
-//       imagemin.optipng({optimizationLevel: 3}),
-//       imagemin.jpegtran({progressive: true}),
-//       imageminMozjpeg(),
-//       imagemin.svgo()
-//     ]))
-//     .pipe(gulp.dest("build/img"));
-// });
-//
-// gulp.task("webp", function () {
-//   return gulp.src("build/img/**/*.{jpg,png}")
-//     .pipe(webp({quality: 90}))
-//     .pipe(gulp.dest("build/img"));
-// });
-//
-// gulp.task("sprite", function () {
-//   return gulp.src("build/img/icon-*.svg")
-//     .pipe(svgstore({
-//       inlineSvg: true
-//     }))
-//     .pipe(rename("sprite.svg"))
-//     .pipe(gulp.dest("build/img"));
-// });
 
 gulp.task("start", gulp.series("clear", "copyhtml", "copyrest", "server"));
 // gulp.task("build", gulp.series("del", "html", "css", "js", "server"));
