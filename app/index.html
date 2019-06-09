@@ -17,7 +17,7 @@
     <div class="map__pins">
       <div class="map__pinsoverlay"><h2>И снова Токио!</h2></div>
 
-      <button class="map__pin map__pin--main">
+      <button class="map__pin map__pin--main" draggable="true">
         <img src="img/main-pin-image.png" width="40" height="44" draggable="false">
         <svg viewBox="0 0 70 70">
           <defs>
@@ -85,7 +85,12 @@
   <div class="notice">
     <h2 class="notice__title">Ваше объявление</h2>
 
-    <form class="notice__form notice__form--disabled" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form
+      class="notice__form notice__form--disabled"
+      action="https://js.dump.academy/keksobooking"
+      method="post"
+      enctype="multipart/form-data"
+      autocomplete="off">
       <fieldset class="notice__header">
         <legend>Ваша фотография (для карты)</legend>
         <div class="notice__photo">
@@ -102,17 +107,17 @@
 
       <fieldset class="form__element form__element--wide">
         <label for="title">Заголовок объявления</label>
-        <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио">
+        <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" minlength="30" maxlength="100" required>
       </fieldset>
 
       <fieldset class="form__element form__element--wide">
         <label for="address">Адрес</label>
-        <input id="address" name="address" type="text">
+        <input id="address" name="address" type="text" required readonly>
       </fieldset>
 
       <fieldset class="form__element">
         <label for="type">Тип жилья</label>
-        <select id="type" name="type">
+        <select id="type" name="type" required>
           <option value="flat" selected>Квартира</option>
           <option value="bungalo">Лачуга</option>
           <option value="house">Дом</option>
@@ -122,17 +127,17 @@
 
       <fieldset class="form__element">
         <label for="price">Цена за ночь, руб.</label>
-        <input id="price" name="price" type="number" placeholder="5000">
+        <input id="price" name="price" type="number" placeholder="5000" min="1000" max="1000000" required>
       </fieldset>
 
       <fieldset class="form__element">
         <label for="timein">Время заезда и выезда</label>
-        <select id="timein" name="timein">
+        <select id="timein" name="timein" required>
           <option value="12:00" selected>После 12</option>
           <option value="13:00">После 13</option>
           <option value="14:00">После 14</option>
         </select>
-        <select id="timeout" name="timeout" title="Time to go out">
+        <select id="timeout" name="timeout" title="Time to go out" required>
           <option value="12:00" selected>Выезд до 12</option>
           <option value="13:00">Выезд до 13</option>
           <option value="14:00">Выезд до 14</option>
@@ -152,9 +157,9 @@
       <fieldset class="form__element">
         <label for="capacity">Количество мест</label>
         <select id="capacity" name="capacity">
-          <option value="3" selected>для 3 гостей</option>
+          <option value="3">для 3 гостей</option>
           <option value="2">для 2 гостей</option>
-          <option value="1">для 1 гостя</option>
+          <option value="1" selected>для 1 гостя</option>
           <option value="0">не для гостей</option>
         </select>
       </fieldset>
@@ -174,8 +179,8 @@
         <input type="checkbox" name="features" value="washer" id="feature-washer">
         <label class="feature feature--washer" for="feature-washer">Стиральная машина</label>
 
-        <input type="checkbox" name="features" value="elevator" id="feature-washer">
-        <label class="feature feature--elevator" for="feature-washer">Лифт</label>
+        <input type="checkbox" name="features" value="elevator" id="feature-elevator">
+        <label class="feature feature--elevator" for="feature-elevator">Лифт</label>
 
         <input type="checkbox" name="features" value="conditioner" id="feature-conditioner">
         <label class="feature feature--conditioner" for="feature-conditioner">Кондиционер</label>
@@ -245,5 +250,6 @@
   <button style="left: 200px; top: 400px;" class="map__pin"><img src="img/avatars/user07.png" width="40" height="40" draggable="false"></button>
 </template>
 <script src="js/map.js"></script>
+<script src="js/form.js"></script>
 </body>
 </html>
