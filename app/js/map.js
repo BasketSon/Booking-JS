@@ -2,9 +2,42 @@
 
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
+var PIN_TAIL_HEIGHT = 22;
 
 var mapField = document.querySelector('.map');
-mapField.classList.remove('map--faded');
+var mapFilters = document.querySelector('.map__filters');
+var filterFields = mapFilters.querySelectorAll('select, input');
+var mapPin = document.querySelector('.map__pin--main');
+var addressField = document.querySelector('#address');
+var noticeForm = document.querySelector('.notice__form');
+
+var mapPinDropHandler = function () {
+  activateMap();
+  enableNoticeForm();
+  getPinAddress();
+  displayCard();
+  displayPins();
+};
+mapPin.addEventListener('dragend', mapPinDropHandler);
+for (var i = 0; i < filterFields.length; i++) {
+  filterFields[i].disabled = true;
+}
+
+var activateMap = function () {
+  mapField.classList.remove('map--faded');
+  mapPin.removeEventListener('dragend', mapPinDropHandler);
+};
+
+var enableNoticeForm = function () {
+  noticeForm.classList.remove('notice__form--disabled');
+};
+
+var getPinAddress = function () {
+  addressField.value = Math.round(mapPin.offsetLeft + mapPin.offsetWidth / 2)
+  + ', ' + Math.round(mapPin.offsetTop + mapPin.offsetHeight + PIN_TAIL_HEIGHT);
+};
+
+getPinAddress();
 
 var makeRandomFactor = function () {
   return Math.random() - 0.5;
@@ -71,41 +104,42 @@ var photos = [
 
 var locationCards = [];
 
+var createLocationCard = function () {
+  var locationX = getRandomArbitrary(0, 1200);
+  var locationY = getRandomArbitrary(130, 630);
+  avatars.sort(makeRandomFactor);
+  offerTitles.sort(makeRandomFactor);
+  var locationCard = {
+    author: {
+      avatar: avatars.pop()
+    },
+    offer: {
+      title: offerTitles.pop(),
+      address: locationX + ', ' + locationY,
+      price: getRandomArbitrary(1000, 1000000),
+      type: roomTypes[getRandomArbitrary(0, 3)],
+      rooms: getRandomArbitrary(1, 5),
+      guests: getRandomArbitrary(1, 6),
+      checkin: checkTimes[getRandomArbitrary(0, 2)],
+      checkout: checkTimes[getRandomArbitrary(0, 2)],
+      features: createRandomFeatures(),
+      description: '',
+      photos: photos
+    },
+    location: {
+      x: locationX,
+      y: locationY
+    }
+  };
+  return locationCard;
+}
 var createCardsArray = function (cardsNumber) {
   createAvatarArray(cardsNumber);
 
   for (var i = 0; i < cardsNumber; i++) {
-    var locationX = getRandomArbitrary(0, 1200);
-    var locationY = getRandomArbitrary(130, 630);
-    avatars.sort(makeRandomFactor);
-    offerTitles.sort(makeRandomFactor);
-    photos.sort(makeRandomFactor);
-    var locationCard = {
-      author: {
-        avatar: avatars.pop()
-      },
-      offer: {
-        title: offerTitles.pop(),
-        address: locationX + ', ' + locationY,
-        price: getRandomArbitrary(1000, 1000000),
-        type: roomTypes[getRandomArbitrary(0, 3)],
-        rooms: getRandomArbitrary(1, 5),
-        guests: getRandomArbitrary(1, 6),
-        checkin: checkTimes[getRandomArbitrary(0, 2)],
-        checkout: checkTimes[getRandomArbitrary(0, 2)],
-        features: createRandomFeatures(),
-        description: '',
-        photos: photos
-      },
-      location: {
-        x: locationX,
-        y: locationY
-      }
-    };
-    locationCards.push(locationCard);
+    locationCards.push(createLocationCard());
   }
 };
-
 createCardsArray(8);
 
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card');
@@ -156,6 +190,7 @@ var renderCard = function (card) {
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   var picturesList = cardElement.querySelector('.popup__pictures').children;
   var pictureItem = picturesList[0];
+  card.offer.photos = card.offer.photos.sort(makeRandomFactor);
   pictureItem.querySelector('img').src = card.offer.photos[0];
   pictureItem.querySelector('img').width = 210;
   for (var k = 1; k < card.offer.photos.length; k++) {
@@ -166,13 +201,24 @@ var renderCard = function (card) {
   cardElement.querySelector('.popup__avatar').src = card.author.avatar;
   return cardElement;
 };
-
-mapField.insertBefore(renderCard(locationCards[0]), filtersContainer);
+var initialCard = renderCard(locationCards[0]).cloneNode(true);
+var displayCard = function () {
+  mapField.insertBefore(initialCard, filtersContainer);
+};
 
 var pinsFragment = document.createDocumentFragment();
-
-for (var i = 0; i < locationCards.length; i++) {
-  pinsFragment.appendChild(renderPin(locationCards[i]));
-}
-
-pinsList.appendChild(pinsFragment);
+var pinClickHandler = function (card) {
+  var similarPin = renderPin(card);
+  var similarCard = renderCard(card).cloneNode(true);
+  similarPin.addEventListener('click', function () {
+    mapField.replaceChild(similarCard, initialCard);
+    initialCard = similarCard;
+  });
+  pinsFragment.appendChild(similarPin);
+};
+var displayPins = function () {
+  for (var i = 0; i < locationCards.length; i++) {
+    pinClickHandler(locationCards[i]);
+  }
+  pinsList.appendChild(pinsFragment);
+};

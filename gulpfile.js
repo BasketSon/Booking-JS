@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
-var gulp = require("gulp");
-var plumber = require("gulp-plumber");
-var server = require("browser-sync").create();
-var rename = require("gulp-rename");
-var posthtml = require("gulp-posthtml");
+var gulp = require('gulp');
+var plumber = require('gulp-plumber');
+var server = require('browser-sync').create();
+var rename = require('gulp-rename');
+var posthtml = require('gulp-posthtml');
 var del = require("del");
-var htmlmin = require("gulp-htmlmin");
-var jsmin = require("gulp-uglify");
+var htmlmin = require('gulp-htmlmin');
+var jsmin = require('gulp-uglify');
 
-gulp.task("clear", async function () {
-  del("dist/**");
+gulp.task('clear', async function () {
+  await del("dist/**");
 });
 
 gulp.task("copyhtml", function () {
