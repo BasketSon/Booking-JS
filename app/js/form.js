@@ -8,30 +8,30 @@
       field.style.boxShadow = '0 0 3px 1px red';
     }
   };
-  var noticeFormInvalidHandler = function (evt) {
+  noticeForm.addEventListener('invalid', function (evt) {
     evt.preventDefault();
     for (var i = 0; i < noticeFormFields.length; i++) {
       highlightInvalidField(noticeFormFields[i]);
     }
-  };
+  });
 
-  noticeForm.addEventListener('invalid', noticeFormInvalidHandler);
 
   var price = document.querySelector('#price');
   var placeType = document.querySelector('#type');
   var setMinPrice = function () {
     var minPrice = 1000;
-    if (placeType.selectedIndex === 0) {
-      minPrice = 1000;
-    }
-    if (placeType.selectedIndex === 1) {
-      minPrice = 0;
-    }
-    if (placeType.selectedIndex === 2) {
-      minPrice = 5000;
-    }
-    if (placeType.selectedIndex === 3) {
-      minPrice = 10000;
+    switch (placeType.selectedIndex) {
+      case 1:
+        minPrice = 0;
+        break;
+      case 2:
+        minPrice = 5000;
+        break;
+      case 3:
+        minPrice = 10000;
+        break;
+      default:
+        minPrice = 1000;
     }
     price.min = minPrice;
     price.placeholder = minPrice;
@@ -74,4 +74,27 @@
   };
 
   noticeForm.addEventListener('change', synchronizeCapacity);
+
+  noticeForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(noticeForm), successHandler, errorHandler);
+  });
+
+  var successHandler = function (response) {
+    noticeForm.reset();
+    console.log(response);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; color: #fff; background-color: red; border-radius: 20px;padding: 30px;';
+    node.style.position = 'absolute';
+    node.style.left = '200px';
+    node.style.top = '20px';
+    node.style.width = '500px';
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    noticeForm.insertAdjacentElement('afterbegin', node);
+  };
 })();
