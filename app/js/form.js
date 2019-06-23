@@ -15,7 +15,6 @@
     }
   });
 
-
   var price = document.querySelector('#price');
   var placeType = document.querySelector('#type');
   var setMinPrice = function () {
@@ -82,7 +81,6 @@
 
   var successHandler = function (response) {
     noticeForm.reset();
-    console.log(response);
   };
 
   var errorHandler = function (errorMessage) {
