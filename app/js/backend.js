@@ -54,6 +54,7 @@
 
       xhr.open('POST', URL_POST);
       xhr.send(data);
+      console.log(data)
     }
   };
 })();

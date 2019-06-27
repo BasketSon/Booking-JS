@@ -542,6 +542,14 @@ textarea:focus {
 .notice__form input:checked + .feature {
   background-color: #ff5635;
 }
+.notice__form input[type="file"]:focus + label {
+  border-color: red;
+}
+
+.notice__form input[type="file"] + label.dragover {
+  border-color: blue;
+  color: blue
+}
 
 .notice__form .feature--wifi {
   background-position: 4px -303px;
@@ -574,7 +582,9 @@ textarea:focus {
 
 .notice__form input[type=file] {
   position: absolute;
-  left: -900em;
+  /* width: 140px; */
+  z-index: -1;
+  opacity: 0;
 }
 
 .notice__form .upload {
@@ -589,6 +599,8 @@ textarea:focus {
 }
 
 .notice__form .drop-zone {
+  flex-basis: 140px;
+  margin-right: 10px;
   color: #999;
   border: dashed 1px #c7c7c7;
   border-radius: 5px;
@@ -604,7 +616,11 @@ textarea:focus {
 }
 
 .form__photo-container {
-  width: 140px;
+  max-width: 480px;
+}
+
+.form__photo-container .upload {
+  flex-wrap: wrap;
 }
 
 .form__element--submit {
