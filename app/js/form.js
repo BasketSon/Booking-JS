@@ -77,7 +77,11 @@
   noticeForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.save(new FormData(noticeForm), successHandler, errorHandler);
+    window.clearFormImages();
   });
+  noticeForm.addEventListener('reset', function () {
+    window.clearFormImages();
+  })
 
   var successHandler = function (response) {
     noticeForm.reset();

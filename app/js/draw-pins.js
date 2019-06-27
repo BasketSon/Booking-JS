@@ -9,8 +9,12 @@
   var pinClickHandler = function (card) {
     var similarPin = window.renderPin(card);
     var similarCard = window.renderCard(card).cloneNode(true);
+    similarCard.querySelector('.popup__close').addEventListener('click', function () {
+      similarCard.classList.add('hidden');
+    });
     similarPin.classList.add('loaded-pin');
     similarPin.addEventListener('click', function () {
+      similarCard.classList.remove('hidden');
       if (!initialCard) {
         initialCard = similarCard;
         window.map.mapField.insertBefore(initialCard, filtersContainer);
